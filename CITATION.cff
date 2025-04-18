@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Banwait"
+    given-names: "Ishaan"
+    orcid: "https://orcid.org/0009-0002-1431-4599"
+title: "DEG Pipeline Assistant"
+version: 1.0.0
+date-released: 2025-04-17
+url: "https://github.com/Shaan7071/DEG-pipeline-assistant"
+repository-code: "https://github.com/yourusername/rnaseq-pipeline-assistant"
+abstract: "A comprehensive tool for analyzing RNA-seq data, identifying differentially expressed genes (DEGs), and performing pathway enrichment analysis."
+keywords:
+  - RNA-seq
+  - bioinformatics
+  - differential expression
+  - pathway analysis
+  - transcriptomics
+license: MIT
