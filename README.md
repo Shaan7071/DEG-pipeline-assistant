@@ -157,7 +157,7 @@ base_dir/
 
 ## License
 
-This project hsa no special license. Thus, the default copyright laws apply. Please contact me if you would like to use this pipeline. 
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Contact
 
