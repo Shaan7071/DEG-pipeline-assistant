@@ -157,7 +157,7 @@ base_dir/
 
 ## License
 
-This project hsa no special license. Thus, the default copyright laws apply, meaning that the owner retain all rights to the source code and no one may reproduce, distribute, or create derivative works from this work unless explicit permission is granted. Please contact me if you would like to use this pipeline. 
+This project hsa no special license. Thus, the default copyright laws apply. Please contact me if you would like to use this pipeline. 
 
 ## Contact
 
