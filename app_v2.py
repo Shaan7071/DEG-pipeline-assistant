@@ -84,9 +84,23 @@ col1, col2 = st.columns(2)
 with col1:
     st.header("Setup Parameters")
     
-    norm_file = st.text_input("Normalized Data File")
-    pw_data = st.text_input("Pairwise Data Directory")
-    base_dir = st.text_input("Base Output Directory")
+    uploaded_norm_file = st.file_uploader("Upload Normalized Data File", type=["csv"])
+    norm_file_path = None
+    if uploaded_norm_file is not None:
+        norm_file_path = f"/tmp/{uploaded_norm_file.name}"
+        with open(norm_file_path, "wb") as f:
+            f.write(uploaded_norm_file.getbuffer())
+    
+    uploaded_pw_files = st.file_uploader("Upload Pairwise Data Files (.csv)", type=["csv"], accept_multiple_files=True)
+    pw_data_paths = []
+    if uploaded_pw_files:
+        for uploaded_file in uploaded_pw_files:
+            file_path = f"/tmp/{uploaded_file.name}"
+            with open(file_path, "wb") as f:
+                f.write(uploaded_file.getbuffer())
+            pw_data_paths.append(file_path)
+            
+    base_dir = st.text_input("Base Output Directory", value="/tmp/output/")
     conditions = st.text_input("Conditions (comma-separated)", "e.g., Control, Treatment1, Treatment2")
     num_replicates = st.number_input("Number of Replicates", min_value=1, value=3)
 
@@ -109,8 +123,8 @@ with col2:
 if st.button("Generate Pipeline Commands"):
     # Collect all parameters
     param_inputs = {
-        "norm_file": norm_file,
-        "pw_data": pw_data,
+        "norm_file": norm_file_path,
+        "pw_data": "/tmp/",
         "base_dir": base_dir,
         "conditions": conditions,
         "num_replicates": num_replicates,
