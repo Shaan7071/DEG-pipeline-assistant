@@ -10,7 +10,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from ai_assistant import get_pipeline_parameters
 
 # Function to run a command and display its output in real-time
-ef run_and_display_stdout(cmd_string):
+def run_and_display_stdout(cmd_string):
     # Parse the command string to separate the program and arguments
     parts = cmd_string.split()
     # Replace 'python' with sys.executable
