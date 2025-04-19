@@ -4,6 +4,7 @@ import sys
 import os
 import time
 from pathlib import Path
+import glob
 
 # Import your AI assistant functionality
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -91,7 +92,7 @@ with col1:
         with open(norm_file_path, "wb") as f:
             f.write(uploaded_norm_file.getbuffer())
     
-    uploaded_pw_files = st.file_uploader("Upload Pairwise Data Files (.csv)", type=["csv"], accept_multiple_files=True)
+    uploaded_pw_files = st.file_uploader("Upload Pairwise Data Files", type=["csv"], accept_multiple_files=True)
     pw_data_paths = []
     if uploaded_pw_files:
         for uploaded_file in uploaded_pw_files:
@@ -100,8 +101,7 @@ with col1:
                 f.write(uploaded_file.getbuffer())
             pw_data_paths.append(file_path)
             
-    base_dir = st.text_input("Base Output Directory", value="/tmp/output/")
-    conditions = st.text_input("Conditions (comma-separated)", "e.g., Control, Treatment1, Treatment2")
+    conditions = st.text_input("Conditions", "e.g., Control, Treatment1, Treatment2")
     num_replicates = st.number_input("Number of Replicates", min_value=1, value=3)
 
 with col2:
@@ -125,7 +125,6 @@ if st.button("Generate Pipeline Commands"):
     param_inputs = {
         "norm_file": norm_file_path,
         "pw_data": "/tmp/",
-        "base_dir": base_dir,
         "conditions": conditions,
         "num_replicates": num_replicates,
         "model_organism": model_organism,
@@ -139,7 +138,7 @@ if st.button("Generate Pipeline Commands"):
     param_final = {
         'norm_file': None,
         'pw_data': None,
-        'base_dir': None,
+        'base_dir': "/tmp/output/",
         'conditions': None,
         'num_replicates': None,
         'model_organism': None,
@@ -219,3 +218,15 @@ if st.session_state.setup_command:
     
     if st.button("Run Analysis Command"):
         run_and_display_stdout(st.session_state.runall_command)
+    
+    output_dir = "/tmp/output"
+    files = glob.glob(os.path.join(output_dir, '**'), recursive=True)
+    files = [f for f in files if os.path.isfile(f)]
+    for filepath in files:
+        filename = os.path.relpath(filepath, output_dir)
+        with open(filepath, "rb") as f:
+            st.download_button(
+                label=f"Download {filename}",
+                data=f,
+                file_name=filename
+            )
