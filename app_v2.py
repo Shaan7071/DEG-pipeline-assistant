@@ -10,16 +10,22 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from ai_assistant import get_pipeline_parameters
 
 # Function to run a command and display its output in real-time
-def run_and_display_stdout(cmd):
+ef run_and_display_stdout(cmd_string):
+    # Parse the command string to separate the program and arguments
+    parts = cmd_string.split()
+    # Replace 'python' with sys.executable
+    if parts[0] == 'python':
+        parts[0] = sys.executable
+
     st.session_state.command_output = []
-    st.session_state.command_output.append(f"Running command: {cmd}")
+    st.session_state.command_output.append(f"Running command: {' '.join(parts)}")
     
     # Create a placeholder for live output
     output_placeholder = st.empty()
     
     process = subprocess.Popen(
-        cmd, 
-        shell=True,
+        parts,  # Pass as a list instead of a string
+        shell=False,  # No shell needed when using a list
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
