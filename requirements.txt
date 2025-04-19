@@ -1,4 +1,4 @@
-click
+click>=8.1.8
 gseapy>=1.1.7
 matplotlib>=3.10.1
 matplotlib-inline>=0.1.7
