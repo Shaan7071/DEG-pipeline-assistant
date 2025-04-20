@@ -5,6 +5,7 @@ import os
 import time
 from pathlib import Path
 import glob
+import shlex
 
 # Import your AI assistant functionality
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -12,12 +13,15 @@ from ai_assistant import get_pipeline_parameters
 
 # Function to run a command and display its output in real-time
 def run_and_display_stdout(cmd_string):
-    # Parse the command string to separate the program and arguments
-    parts = cmd_string.split()
+    print(f"Running command: {cmd_string}")
+    
+    # Use shlex.split to properly handle quoted arguments
+    parts = shlex.split(cmd_string)
+    
     # Replace 'python' with sys.executable
     if parts[0] == 'python':
         parts[0] = sys.executable
-
+        
     st.session_state.command_output = []
     st.session_state.command_output.append(f"Running command: {' '.join(parts)}")
     
@@ -25,8 +29,8 @@ def run_and_display_stdout(cmd_string):
     output_placeholder = st.empty()
     
     process = subprocess.Popen(
-        parts,  # Pass as a list instead of a string
-        shell=False,  # No shell needed when using a list
+        parts,
+        shell=False,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
