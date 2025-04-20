@@ -222,12 +222,8 @@ if st.session_state.setup_command:
     files = glob.glob(os.path.join(output_dir, '**'), recursive=True)
     files = [f for f in files if os.path.isfile(f)]
     if files:  # Only show if there are files to download
-        st.markdown("""
-        <div style="background-color:#f0f2f6; padding:10px; border-radius:10px; margin-bottom:20px">
-            <h2 style="text-align:center; color:#262730">Pipeline Output Files</h2>
-            <p style="text-align:center">Download the generated analysis files below</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.header("Pipeline Output Files", divider="gray")
+        st.markdown("Download the generated analysis files below")
         
         # Create categories for different file types
         file_categories = {
