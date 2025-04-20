@@ -96,11 +96,14 @@ with col1:
         with open(norm_file_path, "wb") as f:
             f.write(uploaded_norm_file.getbuffer())
     
+    # Create a dedicated directory for pairwise files
+    pw_data_dir = "/tmp/pairwise_files/"
+    os.makedirs(pw_data_dir, exist_ok=True)
     uploaded_pw_files = st.file_uploader("Upload Pairwise Data Files", type=["csv"], accept_multiple_files=True)
     pw_data_paths = []
     if uploaded_pw_files:
         for uploaded_file in uploaded_pw_files:
-            file_path = f"/tmp/{uploaded_file.name}"
+            file_path = f"{pw_data_dir}{uploaded_file.name}"
             with open(file_path, "wb") as f:
                 f.write(uploaded_file.getbuffer())
             pw_data_paths.append(file_path)
@@ -125,35 +128,26 @@ with col2:
 
 # Single button to generate pipeline commands
 if st.button("Generate Pipeline Commands"):
-    # Collect all parameters
+    # Collect natural language parameters
     param_inputs = {
-        "norm_file": norm_file_path,
-        "pw_data": "/tmp/",
         "conditions": conditions,
-        "num_replicates": num_replicates,
         "model_organism": model_organism,
         "pw_interest": pw_interest,
-        "log2fc_threshold": log2fc_threshold,
-        "padj_threshold": padj_threshold,
-        "enrich_sig_cutoff": enrich_sig_cutoff,
-        "skip_steps": skip_steps
     }
 
+    # Initialize param_final with direct values that don't need processing
     param_final = {
-        'norm_file': None,
-        'pw_data': None,
+        'norm_file': norm_file_path,
+        'pw_data': "/tmp/",
         'base_dir': "/tmp/output/",
-        'conditions': None,
-        'num_replicates': None,
-        'model_organism': None,
-        'pw_interest': None,
-        'log2fc_threshold': None,
-        'padj_threshold': None,
-        'enrich_sig_cutoff': None,
-        'skip_steps': None
+        'num_replicates': num_replicates,
+        'log2fc_threshold': log2fc_threshold,
+        'padj_threshold': padj_threshold,
+        'enrich_sig_cutoff': enrich_sig_cutoff,
+        'skip_steps': skip_steps
     }
 
-    if any(not value for key, value in param_inputs.items() if key != "skip_steps"):
+    if any(not value for key, value in param_inputs.items()) or any(not value for key, value in param_final.items() if key != "skip_steps"):
         st.error("Please fill in all required parameters.")
     else:
         # Make a single call to the AI assistant to generate commands
@@ -161,20 +155,20 @@ if st.button("Generate Pipeline Commands"):
             # This would call your existing get_pipeline_commands function
             command_suggestion = get_pipeline_parameters(param_inputs, st.session_state.context)
 
+            # Update param_final with AI-generated values
             for param, value in command_suggestion.items():
-                if param in param_final:
-                    param_final[param] = value
+                param_final[param] = value
             
             # Generate base command
             base_command = (
                 f"python pipeline_CLI.py "
-                f"--norm-file \"{param_final['norm_file']}\" "
-                f"--pw-data \"{param_final['pw_data']}\" "
-                f"--base-dir \"{param_final['base_dir']}\" "
+                f"--norm-file {param_final['norm_file']} "
+                f"--pw-data {param_final['pw_data']} "
+                f"--base-dir {param_final['base_dir']} "
                 f"--num-replicates {param_final['num_replicates']} "
             )
             for condition in param_final['conditions']:
-                base_command += f"--conditions \"{condition}\" "
+                base_command += f"--conditions '{condition}' "
 
             # Generate setup command
             setup_command = (
@@ -184,10 +178,11 @@ if st.button("Generate Pipeline Commands"):
             # Generate run-all command
             runall_command = (
                 f"{base_command}run-all "
-                f"--model-organism \"{param_final['model_organism']}\" "
+                f"--model-organism '{param_final['model_organism']}' "
             )
+            # Add each pairwise interest as a separate --pw-interest argument
             for pw in param_final['pw_interest']:
-                runall_command += f"--pw-interest \"{pw}\" "
+                runall_command += f"--pw-interest '{pw}' "
 
             if param_final['log2fc_threshold'] != "1":
                 runall_command += f" --log2fc-threshold {param_final['log2fc_threshold']}"
