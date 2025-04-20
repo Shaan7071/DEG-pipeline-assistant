@@ -32,7 +32,7 @@ def get_pipeline_parameters(user_input_dict, pipeline_context=None):
     - num_replicates: Number of replicates per condition (int)
     
     Analysis parameters:
-    - model_organism: Model organism code. You may need to convert into the g:orth organism id if it isn't already e.g., "drerio" for zebrafish. The dict is here if needed: https://biit.cs.ut.ee/gprofiler/page/organism-list (string)
+    - model_organism: Model organism code. You may need to convert into the g:orth organism id if it isn't already e.g., "drerio" for zebrafish. The dict is here if needed: https://biit.cs.ut.ee/gprofiler/page/organism-list (string, not int)
     - pw_interest: Pairwise comparisons of interest (list of strings)
     - log2fc_threshold: Log2 fold change threshold (int)
     - padj_threshold: Adjusted p-value threshold (int)
