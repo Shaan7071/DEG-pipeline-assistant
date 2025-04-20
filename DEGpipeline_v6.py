@@ -466,7 +466,7 @@ def create_volcano_plots(input_dir_pw_data, base_dir, log2fc_threshold, padj_thr
 def map_to_human_orthologs(pw_interest, model_organism, base_dir):
 
     for file in pw_interest:
-        df = pd.read_csv(f'data/DESeq2/{file}_processed.csv')
+        df = pd.read_csv(os.path.join(base_dir, f'DESeq2/{file}_processed.csv'))
 
         # Sort the data by log2FoldChange
         df = df.sort_values('log2FoldChange', ascending=False)
