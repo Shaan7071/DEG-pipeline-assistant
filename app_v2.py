@@ -138,7 +138,7 @@ if st.button("Generate Pipeline Commands"):
     # Initialize param_final with direct values that don't need processing
     param_final = {
         'norm_file': norm_file_path,
-        'pw_data': "/tmp/",
+        'pw_data': "/tmp/pairwise_files/",
         'base_dir': "/tmp/output/",
         'num_replicates': num_replicates,
         'log2fc_threshold': log2fc_threshold,
