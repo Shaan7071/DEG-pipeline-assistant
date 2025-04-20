@@ -221,11 +221,75 @@ if st.session_state.setup_command:
     output_dir = "/tmp/output"
     files = glob.glob(os.path.join(output_dir, '**'), recursive=True)
     files = [f for f in files if os.path.isfile(f)]
-    for filepath in files:
-        filename = os.path.relpath(filepath, output_dir)
-        with open(filepath, "rb") as f:
+    if files:  # Only show if there are files to download
+        st.markdown("""
+        <div style="background-color:#f0f2f6; padding:10px; border-radius:10px; margin-bottom:20px">
+            <h2 style="text-align:center; color:#262730">Pipeline Output Files</h2>
+            <p style="text-align:center">Download the generated analysis files below</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Create categories for different file types
+        file_categories = {
+            "Plots": [f for f in files if f.endswith(('.png', '.jpg', '.pdf', '.svg'))],
+            "Data Tables": [f for f in files if f.endswith(('.csv', '.tsv', '.xlsx', '.txt'))],
+            "Reports": [f for f in files if f.endswith(('.html', '.md', '.json'))],
+            "Other Files": [f for f in files if not any(f.endswith(ext) for ext in 
+                            ('.png', '.jpg', '.pdf', '.svg', '.csv', '.tsv', '.xlsx', '.txt', '.html', '.md', '.json'))]
+        }
+        
+        # Display files by category in a tabbed interface
+        tabs = st.tabs([f"{category} ({len(files)})" for category, files in file_categories.items() if files])
+        
+        tab_index = 0
+        for category, category_files in file_categories.items():
+            if not category_files:
+                continue
+                
+            with tabs[tab_index]:
+                # Create a grid layout for download buttons
+                cols_per_row = 3
+                for i in range(0, len(category_files), cols_per_row):
+                    cols = st.columns(cols_per_row)
+                    for j in range(cols_per_row):
+                        if i + j < len(category_files):
+                            filepath = category_files[i + j]
+                            filename = os.path.relpath(filepath, output_dir)
+                            with cols[j]:
+                                with open(filepath, "rb") as f:
+                                    st.download_button(
+                                        label=os.path.basename(filename),
+                                        data=f,
+                                        file_name=os.path.basename(filename),
+                                        key=f"download_{i}_{j}_{category}",
+                                        use_container_width=True
+                                    )
+                                # Add a small caption with file info
+                                file_size = os.path.getsize(filepath) / 1024  # KB
+                                st.caption(f"{file_size:.1f} KB | {os.path.splitext(filename)[1][1:].upper()}")
+            
+            tab_index += 1
+        
+        # Add a button to download all files as a zip
+        st.markdown("### Download All Files")
+        
+        if st.button("Prepare All Files as ZIP Archive", use_container_width=True):
+            # Create a temporary zip file
+            import zipfile
+            import io
+            
+            zip_buffer = io.BytesIO()
+            with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                for file in files:
+                    filename = os.path.relpath(file, output_dir)
+                    zip_file.write(file, arcname=filename)
+            
+            zip_buffer.seek(0)
             st.download_button(
-                label=f"Download {filename}",
-                data=f,
-                file_name=filename
+                label="Download All Files (ZIP)",
+                data=zip_buffer,
+                file_name="pipeline_output.zip",
+                mime="application/zip",
+                use_container_width=True
             )
+
