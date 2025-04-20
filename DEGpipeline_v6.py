@@ -552,7 +552,7 @@ def map_to_human_orthologs(pw_interest, model_organism, base_dir):
 
     # Read each comparison file
     for file in pw_interest:
-        df = pd.read_csv(f'data/ortholog_mapping/{file}_orthologs_sig.csv')
+        df = pd.read_csv(os.path.join(base_dir, f'data/ortholog_mapping/{file}_orthologs_sig.csv'))
         comp_name = file
         comparison_dfs[comp_name] = df
         print(f"Loaded {file} with {len(df)} rows")
@@ -624,7 +624,7 @@ def create_heatmap_topDEGs (pw_interest, norm_file_name, base_dir):
 
     # Process each comparison file 
     for file in pw_interest:
-        df = pd.read_csv(f'data/DESeq2/{file}_processed.csv')
+        f = pd.read_csv(os.path.join(base_dir, f'data/ortholog_mapping/{file}_orthologs_sig.csv'))
         # Filter to keep only DEGs (Upregulated or Downregulated)
         df_degs = df[df['Expression'].isin(['Upregulated', 'Downregulated'])]
         # Add to collection
@@ -674,8 +674,7 @@ def perform_GO_enrichment (pw_interest, base_dir, enrich_sig_cutoff):
 
     # Process each comparison file
     for file in pw_interest:
-        df = pd.read_csv(f"data/DESeq2/{file}_processed.csv")
-        df = pd.read_csv(f'{base_dir}/data/ortholog_mapping/{file}_orthologs_sig.csv')
+        df = pd.read_csv(os.path.join(base_dir, f'data/ortholog_mapping/{file}_orthologs_sig.csv'))
         comp_name = file
         comparison_dfs[comp_name] = df
         print(f"Loaded {file} with {len(df)} rows")
