@@ -1,3 +1,7 @@
+# A Streamlit-based interface that simplifies pipeline usage by allowing users to upload files and set parameters in a browser.
+# Author: Ishaan Banwait
+# Last Updated: 2025-04-20
+
 import streamlit as st
 import subprocess
 import sys
