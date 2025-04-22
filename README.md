@@ -20,7 +20,7 @@ This pipeline takes normalized RNA-seq data and performs a complete analysis wor
 ## Installation
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.13+
 - Required Python packages (install via pip):
   ```
   pandas
@@ -35,7 +35,6 @@ This pipeline takes normalized RNA-seq data and performs a complete analysis wor
   requests
   gseapy
   mygene
-  pydeseq2
   openai
   ```
 
