@@ -32,8 +32,6 @@ import mygene
 from matplotlib.colors import LinearSegmentedColormap
 import itertools
 import statsmodels.stats.multitest as smm
-from pydeseq2.dds import DeseqDataSet
-from pydeseq2.ds import DeseqStats
 
 # %% [markdown]
 # ## Metadata Creation
