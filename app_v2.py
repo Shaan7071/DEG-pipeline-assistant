@@ -68,7 +68,7 @@ if 'runall_command' not in st.session_state:
 if 'command_output' not in st.session_state:
     st.session_state.command_output = []
 
-st.title("RNA-seq Pipeline Assistant")
+st.title("DEG Pipeline Assistant")
 
 st.markdown("""
 ## About the Pipeline
