@@ -78,7 +78,7 @@ The pipeline can be run using the CLI with two main commands:
 For a more user-friendly experience, run the Streamlit app:
 
 ```bash
-streamlit run app_v2.py
+streamlit run app.py
 ```
 
 This will open a web interface where you can:
@@ -141,10 +141,10 @@ base_dir/
 
 ## File Descriptions
 
-- **app_v2.py**: Streamlit web application interface that  
+- **app.py**: Streamlit web application interface that  
 - **ai_assistant.py**: AI functionality that collects parameters from the user in natural language and transforms them into valid commands 
 - **pipeline_CLI.py**: Command-line interface for the pipeline
-- **DEGpipeline_v6.py**: Core pipeline functionality and analysis modules
+- **DEGpipeline.py**: Core pipeline functionality and analysis modules
 
 ## Example Workflow
 
