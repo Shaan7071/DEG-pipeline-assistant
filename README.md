@@ -87,6 +87,8 @@ This will open a web interface where you can:
 - Execute commands directly from the interface
 - View real-time command output
 
+Alternatively, connect this repository to the Streamlit cloud at https://streamlit.io/ to handle data that requires more memory.
+
 ## Parameters
 
 ### Setup Parameters
