@@ -1,4 +1,4 @@
-# RNA-seq Pipeline Assistant
+# DEG Pipeline Assistant
 
 A comprehensive tool for analyzing RNA-seq data, identifying differentially expressed genes (DEGs), and performing pathway enrichment analysis.
 
