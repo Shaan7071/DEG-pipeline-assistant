@@ -1,3 +1,6 @@
+# Author: Ishaan Banwait 
+# Last Updated: 2025-04-16
+
 import os
 import openai
 from openai import OpenAI
