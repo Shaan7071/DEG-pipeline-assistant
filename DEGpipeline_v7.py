@@ -9,7 +9,7 @@
 # 
 # Author: Ishaan Banwait
 # 
-# Last Updated: 2025-09-13
+# Last Updated: 2025-09-14
 
 # %%
 # Import libraries
@@ -904,4 +904,5 @@ def perform_KEGG_enrichment (pw_interest, base_dir, enrich_sig_cutoff):
             print(f"KEGG enrichment analysis completed. Results saved for {comp_name}")
         else:
             print(f"No significant KEGG terms found for {comp_name}")
+
 
