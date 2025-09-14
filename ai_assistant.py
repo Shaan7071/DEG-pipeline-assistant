@@ -45,6 +45,7 @@ def get_pipeline_parameters(user_input_dict, pipeline_context=None):
     FORMAT YOUR RESPONSE AS A VALID JSON OBJECT with parameter names as keys.
     Only include parameters that are explicitly mentioned or clearly implied in the text.
     For file paths and directory paths, preserve the exact formatting including quotes and backslashes.
+    Ensure that skip_steps match the given options above (eg. skip--go, not skip-GO
     """
     # Format the user input dictionary into a structured text
     formatted_input = ""
@@ -440,3 +441,4 @@ def interactive_command_builder():
 
 if __name__ == "__main__":
     interactive_command_builder()
+
