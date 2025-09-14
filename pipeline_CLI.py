@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 # Import functions from your pipeline module
-from DEGpipeline import (
+from DEGpipeline_v7 import (
     create_metadata,
     create_boxplots,
     create_correlation_heatmap,
@@ -276,4 +276,5 @@ def run_all(ctx, log2fc_threshold, padj_threshold, enrich_sig_cutoff, model_orga
 # entry point
 if __name__ == '__main__':
     cli()
+
 
